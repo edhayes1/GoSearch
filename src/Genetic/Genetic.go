@@ -7,17 +7,6 @@ import (
 	"math"
 )
 
-func genRandomTours(numTours int, size int)([][]int){
-	randomTours := make([][]int, numTours)
-
-	for i, tour := range randomTours{
-		tour = rand.Perm(size)
-		randomTours[i] = tour
-	}
-
-	return randomTours
-}
-
 func sortnElements(population [][]int, cities [][]int, n int) ([][]int){
 	for i := 0; i < n; i++ {
 	    for j := i+1; j < n; j++ {
@@ -302,12 +291,12 @@ func doMutation(child []int, probability int) ([]int){
 func doIt(populationSize int, targetFitness int, cities [][]int, size int) ([]int, int){
 
 
-	population := genRandomTours(populationSize, size)
+	population := Utils.GenRandomTours(populationSize, size)
 	bestTour, populationFitness := Utils.FindBestTour(population, cities)
 
 	shortestLength := populationFitness
 
-	probabilityOfMutation := 10		//out of 100
+	probabilityOfMutation := 15		//out of 100
 
 
 	for populationFitness > targetFitness{
@@ -344,8 +333,8 @@ func doIt(populationSize int, targetFitness int, cities [][]int, size int) ([]in
 }
 
 func main() {
-
-	cities := Utils.ParseFile()
+	filename := "/home/ed/Documents/SoftwareMethodologies/AISearch/Search/CityFiles/AISearchfile021.txt"
+	cities := Utils.ParseFile(filename)
 	size := len(cities)+1
 
 	bestTour, shortestLength := doIt(200, 1473, cities, size)

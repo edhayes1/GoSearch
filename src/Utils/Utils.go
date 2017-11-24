@@ -5,13 +5,13 @@ import (
 		"io/ioutil"
 		"regexp"
 		"strconv"
-	"os"
-	"strings"
+		"os"
+		"strings"
+		"math/rand"
 )
 
 
-func ParseFile() ([][]int){
-	filename := "/home/ed/Documents/SoftwareMethodologies/AISearch/Search/CityFiles/AISearchfile048.txt"
+func ParseFile(filename string) ([][]int){
     b, err := ioutil.ReadFile(filename) // just pass the file name
     if err != nil {
         fmt.Print(err)
@@ -71,7 +71,7 @@ func WriteFile(tourSize int, length int, tour []int){
 	nameString := 	"NAME = AISearchfile" + tourSizeStringZero + ",\n"
 	lengthString := "LENGTH = " + strconv.Itoa(length) + ",\n"
 
-	f, err := os.Create("/home/ed/Documents/SoftwareMethodologies/AISearch/GoSearch/main/answers/TourfileA/tourAISearchfile" + tourSizeStringZero + ".txt")
+	f, err := os.Create("/home/ed/Documents/SoftwareMethodologies/AISearch/GoSearch/main/answers/TourfileB/tourAISearchfile" + tourSizeStringZero + ".txt")
 	fileError(err)
 
 	fmt.Fprint(f, nameString)
@@ -157,4 +157,15 @@ func GetIndexOfValue(currCity int, parent []int) int{
 		}
 	}
 	return -1
+}
+
+func GenRandomTours(numTours int, size int)([][]int){
+	randomTours := make([][]int, numTours)
+
+	for i, tour := range randomTours{
+		tour = rand.Perm(size)
+		randomTours[i] = tour
+	}
+
+	return randomTours
 }
