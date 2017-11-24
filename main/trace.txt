@@ -1,0 +1,40 @@
+Fri 11/24/17  10:52:59 AM
+
+directory: answers ...
+TourfileA...
+AISearchfile012.txt: good (length of tour is 56)
+AISearchfile017.txt: good (length of tour is 1444)
+AISearchfile021.txt: good (length of tour is 2549)
+AISearchfile026.txt: good (length of tour is 1473)
+AISearchfile042.txt: good (length of tour is 1188)
+AISearchfile048.txt: good (length of tour is 13028)
+AISearchfile058.txt: good (length of tour is 25395)
+AISearchfile175.txt: good (length of tour is 21643)
+AISearchfile180.txt: good (length of tour is 2330)
+AISearchfile535.txt: good (length of tour is 53263)
+AISearchtestcase.txt: good (length of tour is 28)
+
+Best tours:
+
+AISearchfile012.txt: best tour has length 56
+AISearchfile012.txt winners : answers
+AISearchfile017.txt: best tour has length 1444
+AISearchfile017.txt winners : answers
+AISearchfile021.txt: best tour has length 2549
+AISearchfile021.txt winners : answers
+AISearchfile026.txt: best tour has length 1473
+AISearchfile026.txt winners : answers
+AISearchfile042.txt: best tour has length 1188
+AISearchfile042.txt winners : answers
+AISearchfile048.txt: best tour has length 13028
+AISearchfile048.txt winners : answers
+AISearchfile058.txt: best tour has length 25395
+AISearchfile058.txt winners : answers
+AISearchfile175.txt: best tour has length 21643
+AISearchfile175.txt winners : answers
+AISearchfile180.txt: best tour has length 2330
+AISearchfile180.txt winners : answers
+AISearchfile535.txt: best tour has length 53263
+AISearchfile535.txt winners : answers
+AISearchtestcase.txt: best tour has length 28
+AISearchtestcase.txt winners : answers
