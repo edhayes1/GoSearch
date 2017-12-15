@@ -33,25 +33,111 @@ func probFunc(deltaE int, temp float64) bool{
 	}
 }
 
+func createNullTour(size int) []int {
+	tour := make([]int, size)
+	for i,_ := range tour{
+		tour[i] = -1
+	}
+	return tour
+}
+
+func nearestNeighbour(cities [][]int, size int) []int{
+	tour := createNullTour(size)
+	currentCity := rand.Intn(size)
+
+	for i := 0; i < size; i++{
+		minDistance := math.MaxInt32
+		closestCity := -1
+
+		for j := 0; j < size; j++ {
+
+			if (j != currentCity && !Utils.CityInSlice(j, tour)){
+				x := currentCity
+				y := j
+
+				if y > x {
+					x, y = y, x
+				}
+
+				distance := cities[y][x]
+				if (distance < minDistance){
+					minDistance = distance
+					closestCity = j
+				}
+			}
+		}
+		currentCity = closestCity
+		tour[i] = currentCity
+	}
+	return tour
+}
+
+func expCool(numIterations int, T0 float64, a float64) float64{
+	return T0*math.Pow(a, float64(numIterations))
+}
+
+func logCool(numIterations int, T0 float64, a float64) float64{
+	return T0/(1 + a*math.Log10(float64(1+numIterations)))
+}
+
+func linCool(numIterations int, T0 float64, a float64) float64{
+	return T0/(1.0 + a*float64(numIterations))
+}
+
+func quadCool(numIterations int, T0 float64, a float64) float64{
+	return T0/(1.0+ a*math.Pow(float64(numIterations), 2))
+}
+
+func getNeighbourhood(tour []int) [][]int{
+
+	neighbourhood := make([][]int, 5)
+	for i := 0; i < 5; i++ {
+		temp := make([]int, len(tour))
+		copy(temp, tour)
+		neighbourhood[i] = invertSubTour(temp)
+	}
+
+	return neighbourhood
+}
+
+func swapCities(tour []int) []int{
+	city1 := rand.Intn(len(tour))
+	city2 := rand.Intn(len(tour))
+
+	for city1 == city2{
+		city2 = rand.Intn(len(tour))
+	}
+
+	tour[city1], tour[city2] = tour[city2], tour[city1]
+
+	return tour
+}
+
+
 func main(){
-	filename := "/home/ed/Documents/SoftwareMethodologies/AISearch/Search/CityFiles/AISearchfile535.txt"
+	filename := "/home/ed/Documents/SoftwareMethodologies/AISearch/Search/CityFiles/AISearchfile180.txt"
 	cities := Utils.ParseFile(filename)
 	size := len(cities)+1
 
-	currentTourTemp := Utils.GenRandomTours(1, size)
-	currentTour := currentTourTemp[0]
+	temperature := 200.0
+	a := 0.999999
 
-	temperature := 100000000.0
+	currentTour := nearestNeighbour(cities, size)
 
+	numIterations := 0
+
+	bestTour := make([]int, size)
 	bestLength := math.MaxInt32
 
-	for temperature > 0.00000000000000000000000000000000000000000000001 {
-		temp := make([]int, len(currentTour))
-		copy(temp, currentTour)
+	for temperature > 0.0000001 && bestLength > 1950{
 
-		successorTour := invertSubTour(temp)
+		//temp := make([]int, len(currentTour))
+		//copy(temp, currentTour)
+		//successorTour := swapCities(temp)
+		neighbourhood := getNeighbourhood(currentTour)
+		successorTour, lenSuccessorTour := Utils.FindBestTour(neighbourhood, cities)
 
-		lenSuccessorTour := Utils.GetTourLength(successorTour, cities)
+		//lenSuccessorTour := Utils.GetTourLength(successorTour, cities)
 		lenCurrentTour := Utils.GetTourLength(currentTour, cities)
 
 		deltaE := lenSuccessorTour - lenCurrentTour
@@ -63,17 +149,17 @@ func main(){
 
 		if (lenCurrentTour < bestLength){
 			bestLength = lenCurrentTour
-			fmt.Print(lenCurrentTour)
+			copy(bestTour, currentTour)
+			fmt.Print(bestLength)
 			fmt.Print(" temp = ")
 			fmt.Print(temperature)
 			fmt.Print("\n\n")
-
-			writtenTour := make([]int, len(currentTour))
-			copy(writtenTour, currentTour)
-
-			Utils.WriteFile(size, lenCurrentTour, writtenTour)
 		}
 
-		temperature *= 0.9999
+		numIterations++
+		temperature = a*temperature//expCool(numIterations, temperature, a)
+
 	}
+
+	Utils.WriteFile(size, Utils.GetTourLength(bestTour, cities), bestTour)
 }

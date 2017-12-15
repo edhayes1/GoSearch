@@ -251,7 +251,7 @@ func doERCrossover(parent1 []int, parent2 []int) []int{
 }
 
 func doInvMutation(child []int, probability int) []int{
-	sample := rand.Intn(100)
+	sample := rand.Intn(10000)	//out of 10000
 
 	if sample < probability{
 
@@ -259,7 +259,7 @@ func doInvMutation(child []int, probability int) []int{
 		//if maxLengthOfSubTour == 0{maxLengthOfSubTour = 2}
 
 		lengthOfSubTour := rand.Intn(maxLengthOfSubTour)
-		startIndex := rand.Intn(len(child)-1 - lengthOfSubTour)
+		startIndex := rand.Intn(len(child)- 1 - lengthOfSubTour)
 		endIndex := startIndex + lengthOfSubTour -1
 
 		for startIndex <= endIndex{
@@ -296,7 +296,7 @@ func doIt(populationSize int, targetFitness int, cities [][]int, size int) ([]in
 
 	shortestLength := populationFitness
 
-	probabilityOfMutation := 15		//out of 100
+	probabilityOfMutation := 10000		//out of 1000
 
 
 	for populationFitness > targetFitness{
@@ -316,7 +316,8 @@ func doIt(populationSize int, targetFitness int, cities [][]int, size int) ([]in
 		population = newPop
 		bestTour, populationFitness = Utils.FindBestTour(population, cities)
 
-		//if (shortestLength < 6000 && probabilityOfMutation < 100){probabilityOfMutation++}
+		if (probabilityOfMutation > 20){probabilityOfMutation = int(float64(probabilityOfMutation) * 0.9999999999999999)}	//helped
+
 		if (populationFitness < shortestLength){
 			shortestLength = populationFitness
 			writtenTour := make([]int, len(bestTour))
@@ -326,6 +327,8 @@ func doIt(populationSize int, targetFitness int, cities [][]int, size int) ([]in
 
 			fmt.Print("\n")
 			fmt.Print(populationFitness)
+			fmt.Print(" ")
+			fmt.Print(probabilityOfMutation)
 		}
 	}
 
@@ -333,11 +336,11 @@ func doIt(populationSize int, targetFitness int, cities [][]int, size int) ([]in
 }
 
 func main() {
-	filename := "/home/ed/Documents/SoftwareMethodologies/AISearch/Search/CityFiles/AISearchfile021.txt"
+	filename := "/home/ed/Documents/SoftwareMethodologies/AISearch/Search/CityFiles/AISearchfile180.txt"
 	cities := Utils.ParseFile(filename)
 	size := len(cities)+1
 
-	bestTour, shortestLength := doIt(200, 1473, cities, size)
+	bestTour, shortestLength := doIt(200, 1950, cities, size)
 	print("reached goal ")
 	print(bestTour)
 	print(shortestLength)
